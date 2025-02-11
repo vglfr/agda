@@ -8,6 +8,7 @@
         in pkgs.mkShell {
           packages = [
             pkgs.agda
+            pkgs.just
           ];
 
           shellHook = ''
