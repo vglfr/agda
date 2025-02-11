@@ -1,4 +1,4 @@
-module plfa.p1-1 where
+module PLFA.P1-1-Naturals where
 
 data N : Set where
   nil  : N
