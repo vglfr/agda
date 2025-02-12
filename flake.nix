@@ -6,8 +6,10 @@
       devShells.default =
         let pkgs = nixpkgs.legacyPackages.${system};
         in pkgs.mkShell {
+          AGDA_DIR = "./.agda";
+
           packages = [
-            pkgs.agda
+            (pkgs.agda.withPackages (ps: [ ps.standard-library ]))
             pkgs.just
           ];
 
