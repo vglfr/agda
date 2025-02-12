@@ -12,13 +12,8 @@ open import CS410-17.Prelude
 data Vec (X : Set) : Nat -> Set where  -- like lists, but length-indexed
   []   :                              Vec X zero
   _,-_ : {n : Nat} -> X -> Vec X n -> Vec X (suc n)
-infixr 4 _,-_   -- the "cons" operator associates to the right
 
--- I like to use the asymmetric ,- to remind myself that the element is to
--- the left and the rest of the list is to the right.
-
--- Vectors are useful when there are important length-related safety
--- properties.
+infixr 4 _,-_
 
 
 ------------------------------------------------------------------------------
