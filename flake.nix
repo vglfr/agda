@@ -10,6 +10,8 @@
 
           packages = [
             (pkgs.agda.withPackages (ps: [ ps.standard-library ]))
+            pkgs.emacs
+            pkgs.emacsPackages.evil
             pkgs.just
           ];
 

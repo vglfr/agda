@@ -34,6 +34,10 @@ infixl 6 _+_ _-_
 infixl 7 _*_
 infixl 8 _^_
 
+{-# BUILTIN NATPLUS _+_ #-}
+{-# BUILTIN NATTIMES _*_ #-}
+{-# BUILTIN NATMINUS _-_ #-}
+
 _ : 2 + 3 ≡ 5
 _ =
   begin
