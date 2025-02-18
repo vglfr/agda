@@ -195,35 +195,35 @@ _ =
     suc m * (n * p)
   ∎
 
-*-identity-l : ∀ (m : ℕ) -> m * suc zero ≡ m
-*-identity-l zero =
+*-identity-r : ∀ (m : ℕ) -> m * suc zero ≡ m
+*-identity-r zero =
   begin
     zero * suc zero
   ≡⟨⟩
     zero
   ∎
-*-identity-l (suc m) =
+*-identity-r (suc m) =
   begin
     suc m * suc zero
   ≡⟨⟩
     suc (m * suc zero)
-  ≡⟨ cong suc (*-identity-l m) ⟩
+  ≡⟨ cong suc (*-identity-r m) ⟩
     suc m
   ∎
 
-*-identity-r : ∀ (m : ℕ) ->  suc zero * m ≡ m
-*-identity-r zero =
+*-identity-l : ∀ (m : ℕ) ->  suc zero * m ≡ m
+*-identity-l zero =
   begin
     suc zero * zero
   ≡⟨⟩
     zero
   ∎
-*-identity-r (suc m) =
+*-identity-l (suc m) =
   begin
     suc zero * suc m
   ≡⟨⟩
     suc (suc zero * m)
-  ≡⟨ cong suc (*-identity-r m) ⟩
+  ≡⟨ cong suc (*-identity-l m) ⟩
     suc m
   ∎
 
@@ -239,58 +239,50 @@ _ =
 *-zero zero = refl
 *-zero (suc n) rewrite *-zero n = refl
 
-+-suc'' : ∀ (n : ℕ) -> suc n ≡ n + 1
-+-suc'' zero = refl
-+-suc'' (suc n) rewrite +-comm 1 (1 + n) = refl
+*-suc-r : ∀ (m n : ℕ) -> m * suc n ≡ m * n + m -- a*3 = a*2 + a 
+*-suc-r zero n = refl
+-- *-suc-r (suc m) n =
+--   begin
+--     suc m * suc n
+--   -- ≡⟨⟩
+--   --   suc (m + suc n)
+--   -- ≡⟨ cong suc (+-suc m n) ⟩
+--   --   suc (suc (m + n))
+--   ≡⟨ cong (*-suc-r m (suc n)) ⟩
+--     m * suc n + m
+--   ∎
 
-*-n-m-plus-n : ∀ (m n : ℕ) -> m * n + n ≡ suc m * n
-*-n-m-plus-n zero n =
+*-suc-l : ∀ (m n : ℕ) -> suc m * n ≡ m * n + n -- 3*a = 2*a + a
+*-suc-l zero n =
   begin
-    zero * n + n
+    suc zero * n
+  ≡⟨ *-identity-l n ⟩
+    n
   ≡⟨⟩
     zero + n
   ≡⟨⟩
-    n
-  ≡⟨ sym (*-identity-r n) ⟩
-    suc zero * n
+    zero * n + n
   ∎
--- *-n-m-plus-n (suc m) n =
---   begin
---     suc m * n + n
---   ≡⟨⟩
---     (suc zero + m) * n + n
---   ≡⟨ (_+ n) (*-distrib-+ (suc zero) m n) ⟩
---     m * n + suc zero * n + n
---   ≡⟨⟩
---     m * n + n + n
---   -- ≡⟨ sym (*-identity-r n) ⟩
---   ≡⟨⟩
---     suc (suc m) * n
---   ∎
 
--- *-comm : ∀ (m n : ℕ) -> m * n ≡ n * m
--- *-comm zero n =
---   begin
---     zero * n
---   ≡⟨⟩
---     zero
---   ≡⟨ sym (*-zero n) ⟩
---     n * zero
---   ∎
--- *-comm (suc n) m =
---   begin
---     suc n * m
---   ≡⟨⟩
---     (suc zero + n) * m
---   ≡⟨ *-distrib-+ (suc zero) n m ⟩
---     suc zero * m + n * m
---   ≡⟨ +-comm (n * m) (suc zero * m) ⟩
---     n * m + suc zero * m
---   ≡⟨ ((n * m) +_) (*-identity m) ⟩
---     n * m + m
---   ≡⟨⟩
---     m * suc n
---   ∎
+*-comm : ∀ (m n : ℕ) -> m * n ≡ n * m
+*-comm m zero =
+  begin
+    m * zero
+  ≡⟨ *-zero m ⟩
+    zero
+  ≡⟨⟩
+    zero * m
+  ∎
+*-comm m (suc n) =
+  begin
+    m * suc n
+  ≡⟨ *-suc-r m n ⟩
+    m * n + m
+  ≡⟨ cong (_+ m) (*-comm m n) ⟩
+    n * m + m
+  ≡⟨ sym (*-suc-l n m) ⟩
+    suc n * m
+  ∎
 
 ∸-monus : ∀ (n : ℕ) -> 0 ∸ n ≡ 0
 ∸-monus zero = refl
