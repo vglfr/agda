@@ -195,19 +195,35 @@ _ =
     suc m * (n * p)
   ∎
 
-*-identity : ∀ (m : ℕ) -> m * suc zero ≡ m
-*-identity zero =
+*-identity-l : ∀ (m : ℕ) -> m * suc zero ≡ m
+*-identity-l zero =
   begin
     zero * suc zero
   ≡⟨⟩
     zero
   ∎
-*-identity (suc m) =
+*-identity-l (suc m) =
   begin
     suc m * suc zero
   ≡⟨⟩
     suc (m * suc zero)
-  ≡⟨ cong suc (*-identity m) ⟩
+  ≡⟨ cong suc (*-identity-l m) ⟩
+    suc m
+  ∎
+
+*-identity-r : ∀ (m : ℕ) ->  suc zero * m ≡ m
+*-identity-r zero =
+  begin
+    suc zero * zero
+  ≡⟨⟩
+    zero
+  ∎
+*-identity-r (suc m) =
+  begin
+    suc zero * suc m
+  ≡⟨⟩
+    suc (suc zero * m)
+  ≡⟨ cong suc (*-identity-r m) ⟩
     suc m
   ∎
 
@@ -223,20 +239,61 @@ _ =
 *-zero zero = refl
 *-zero (suc n) rewrite *-zero n = refl
 
-*-comm : ∀ (m n : ℕ) -> m * n ≡ n * m
-*-comm m zero =
++-suc'' : ∀ (n : ℕ) -> suc n ≡ n + 1
++-suc'' zero = refl
++-suc'' (suc n) rewrite +-comm 1 (1 + n) = refl
+
+*-n-m-plus-n : ∀ (m n : ℕ) -> m * n + n ≡ suc m * n
+*-n-m-plus-n zero n =
   begin
-    m * zero
-  ≡⟨ *-zero m ⟩
-    zero
+    zero * n + n
   ≡⟨⟩
-    zero * m
+    zero + n
+  ≡⟨⟩
+    n
+  ≡⟨ sym (*-identity-r n) ⟩
+    suc zero * n
   ∎
-*-comm m (suc n) =
-  begin
-    m * suc n
-  ≡⟨⟩
-    ?
-  ≡⟨⟩
-    suc n * m
-  ∎
+-- *-n-m-plus-n (suc m) n =
+--   begin
+--     suc m * n + n
+--   ≡⟨⟩
+--     (suc zero + m) * n + n
+--   ≡⟨ (_+ n) (*-distrib-+ (suc zero) m n) ⟩
+--     m * n + suc zero * n + n
+--   ≡⟨⟩
+--     m * n + n + n
+--   -- ≡⟨ sym (*-identity-r n) ⟩
+--   ≡⟨⟩
+--     suc (suc m) * n
+--   ∎
+
+-- *-comm : ∀ (m n : ℕ) -> m * n ≡ n * m
+-- *-comm zero n =
+--   begin
+--     zero * n
+--   ≡⟨⟩
+--     zero
+--   ≡⟨ sym (*-zero n) ⟩
+--     n * zero
+--   ∎
+-- *-comm (suc n) m =
+--   begin
+--     suc n * m
+--   ≡⟨⟩
+--     (suc zero + n) * m
+--   ≡⟨ *-distrib-+ (suc zero) n m ⟩
+--     suc zero * m + n * m
+--   ≡⟨ +-comm (n * m) (suc zero * m) ⟩
+--     n * m + suc zero * m
+--   ≡⟨ ((n * m) +_) (*-identity m) ⟩
+--     n * m + m
+--   ≡⟨⟩
+--     m * suc n
+--   ∎
+
+∸-monus : ∀ (n : ℕ) -> 0 ∸ n ≡ 0
+∸-monus zero = refl
+∸-monus (suc n) = refl
+
+-- ∸-+-assoc : ∀ (m n p : ℕ) -> m ∸ n ∸ p ≡ m ∸ (n + p)
