@@ -241,7 +241,7 @@ _ =
 
 *-suc-r : ∀ (m n : ℕ) -> m * suc n ≡ m * n + m -- a*3 = a*2 + a 
 *-suc-r zero n = refl
--- *-suc-r (suc m) n =
+*-suc-r (suc m) n = ?
 --   begin
 --     suc m * suc n
 --   -- ≡⟨⟩
@@ -262,6 +262,18 @@ _ =
     zero + n
   ≡⟨⟩
     zero * n + n
+  ∎
+*-suc-l (suc m) n =
+  begin
+    suc (suc m) * n
+  ≡⟨⟩
+    (suc zero + suc m) * n
+  ≡⟨ *-distrib-+ (suc zero) (suc m) n ⟩
+    suc zero * n + suc m * n
+  ≡⟨ +-comm (suc zero * n) (suc m * n) ⟩
+    suc m * n + suc zero * n
+  ≡⟨ Eq.subst (λ x -> suc m * n + x) (*-identity-l n) ⟩
+    suc m * n + n
   ∎
 
 *-comm : ∀ (m n : ℕ) -> m * n ≡ n * m
