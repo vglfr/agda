@@ -41,21 +41,25 @@ _ =
     suc m + (n + p)
   ∎
 
-+-identity : ∀ (m : ℕ) -> m + zero ≡ m
-+-identity zero =
++-identity-r : ∀ (m : ℕ) -> m + zero ≡ m
++-identity-r zero =
   begin
     zero + zero
   ≡⟨⟩
     zero
   ∎
-+-identity (suc m) =
++-identity-r (suc m) =
   begin
     suc m + zero
   ≡⟨⟩
     suc (m + zero)
-  ≡⟨ cong suc (+-identity m) ⟩
+  ≡⟨ cong suc (+-identity-r m) ⟩
     suc m
   ∎
+
++-identity-l : ∀ (m : ℕ) -> zero + m ≡ m
++-identity-l zero = refl
++-identity-l (suc m) = refl
 
 +-suc : ∀ (m n : ℕ) -> m + suc n ≡ suc (m + n)
 +-suc zero n =
@@ -81,7 +85,7 @@ _ =
 +-comm m zero =
   begin
     m + zero
-  ≡⟨ +-identity m ⟩
+  ≡⟨ +-identity-r m ⟩
     m
   ≡⟨⟩
     zero + m
@@ -241,16 +245,18 @@ _ =
 
 *-suc-r : ∀ (m n : ℕ) -> m * suc n ≡ m * n + m -- a*3 = a*2 + a 
 *-suc-r zero n = refl
-*-suc-r (suc m) n = ?
---   begin
---     suc m * suc n
---   -- ≡⟨⟩
---   --   suc (m + suc n)
---   -- ≡⟨ cong suc (+-suc m n) ⟩
---   --   suc (suc (m + n))
---   ≡⟨ cong (*-suc-r m (suc n)) ⟩
---     m * suc n + m
---   ∎
+*-suc-r (suc m) n =
+  begin
+    suc m * suc n
+  ≡⟨ +-comm (suc m) (suc m * n) ⟩
+    suc m * n + suc m
+  ≡⟨ *-distrib-+ m (suc zero) n ⟩
+    suc m * suc zero + suc m * n
+  ≡⟨ cong (_+ (suc m * n)) (*-identity-r (suc m)) ⟩ -- XXX
+    suc m + suc m * n
+  ≡⟨ +-comm (suc m) (suc m * n) ⟩
+    suc m * n + suc m
+  ∎
 
 *-suc-l : ∀ (m n : ℕ) -> suc m * n ≡ m * n + n -- 3*a = 2*a + a
 *-suc-l zero n =
@@ -272,8 +278,45 @@ _ =
     suc zero * n + suc m * n
   ≡⟨ +-comm (suc zero * n) (suc m * n) ⟩
     suc m * n + suc zero * n
-  ≡⟨ Eq.subst (λ x -> suc m * n + x) (*-identity-l n) ⟩
+  ≡⟨ cong (suc m * n +_) (*-identity-l n) ⟩
     suc m * n + n
+  ∎
+
+_ : 2 + 1 * 2 ≡ 2 + 2
+_ =
+  begin
+    2 + 1 * 2
+  ≡⟨⟩
+    2 * 2
+  ∎
+
+*-nested-id : ∀ (m n : ℕ) -> m + suc zero * n ≡ m + n
+*-nested-id zero n =
+  begin
+    zero + suc zero * n
+  ≡⟨ +-identity-l (suc zero * n) ⟩
+    suc zero * n
+  ≡⟨ *-identity-l n ⟩
+    n
+  ≡⟨⟩
+    zero + n
+  ∎
+-- *-nested-id (suc m) n rewrite *-identity-l n = refl
+*-nested-id (suc m) n =
+  begin
+    suc m + suc zero * n
+  ≡⟨ cong (suc m +_) (*-identity-l n) ⟩
+    suc m + n
+  ∎
+
+*-nested-id-2 : ∀ (m n : ℕ) -> m * suc zero + n ≡ m + n
+*-nested-id-2 zero n = refl
+-- *-nested-id-2 (suc m) n rewrite *-identity-r m = refl
+*-nested-id-2 (suc m) n =
+  begin
+    suc m * suc zero + n
+  ≡⟨ cong (_+ n) (*-identity-r (suc m)) ⟩
+    suc m + n
   ∎
 
 *-comm : ∀ (m n : ℕ) -> m * n ≡ n * m
