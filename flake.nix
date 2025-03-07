@@ -1,7 +1,13 @@
 {
-  inputs.utils.url = "github:numtide/flake-utils";
+  inputs = {
+    hask = {
+      url = "path:///home/vglfr/test/hask";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    utils.url = "github:numtide/flake-utils";
+  };
 
-  outputs = { nixpkgs, utils, ... }:
+  outputs = { nixpkgs, hask, utils, ... }:
     let mkShell = system: {
       devShells.default =
         let pkgs = nixpkgs.legacyPackages.${system};
@@ -9,6 +15,8 @@
           AGDA_DIR = "./.agda";
 
           packages = [
+            hask.defaultPackage.${system}
+
             (pkgs.agda.withPackages (ps: [ ps.standard-library ]))
             pkgs.emacs
             pkgs.emacsPackages.evil
