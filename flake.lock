@@ -26,8 +26,8 @@
         ]
       },
       "locked": {
-        "lastModified": 1741207407,
-        "narHash": "sha256-s+ghoavkpoEugh7tZRpM18GhqnfdGq3W2Co4ZdATtiQ=",
+        "lastModified": 1749435451,
+        "narHash": "sha256-65HN1TrsZjmpPvSGbCe08E2u7gsoJav8I2zdsDPvJ4g=",
         "path": "/home/vglfr/test/hask",
         "type": "path"
       },
@@ -38,11 +38,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1738734093,
-        "narHash": "sha256-UEYOKfXXKU49fR7dGB05As0s2pGbLK4xDo48Qtdm7xs=",
+        "lastModified": 1749401433,
+        "narHash": "sha256-HXIQzULIG/MEUW2Q/Ss47oE3QrjxvpUX7gUl4Xp6lnc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "5b2753b0356d1c951d7a3ef1d086ba5a71fff43c",
+        "rev": "08fcb0dcb59df0344652b38ea6326a2d8271baff",
         "type": "github"
       },
       "original": {
